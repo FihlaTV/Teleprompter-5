@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scripts_nav_graph.xml"
+    app:startDestination="@id/scriptsFragment">
+
+
+    <fragment
+        android:id="@+id/scriptsFragment"
+        android:name="com.tjohnn.teleprompter.ui.scripts.ScriptsFragment"
+        android:label="fragment_scripts"
+        tools:layout="@layout/fragment_scripts" >
+        <action
+            android:id="@+id/action_scriptsFragment_to_addEditScriptActivity"
+            app:destination="@id/addEditScriptActivity" />
+        <action
+            android:id="@+id/action_scriptsFragment_to_telepromptActivity"
+            app:destination="@id/telepromptActivity" />
+    </fragment>
+    <activity
+        android:id="@+id/addEditScriptActivity"
+        android:name="com.tjohnn.teleprompter.ui.addeditscript.AddEditScriptActivity"
+        android:label="activity_add_edit_script"
+        tools:layout="@layout/activity_add_edit_script" />
+    <activity
+        android:id="@+id/telepromptActivity"
+        android:name="com.tjohnn.teleprompter.ui.teleprompt.TelepromptActivity"
+        android:label="activity_teleprompt"
+        tools:layout="@layout/activity_teleprompt" />
+</navigation>

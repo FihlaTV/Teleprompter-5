@@ -1,15 +1,18 @@
-package com.tjohnn.teleprompter.ui;
+package com.tjohnn.teleprompter.ui.scripts;
 
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.tjohnn.teleprompter.R;
+import com.tjohnn.teleprompter.daggerjetifier.DaggerAppCompatActivityX;
 
-public class ScriptsActivity extends AppCompatActivity {
+public class ScriptsActivity extends DaggerAppCompatActivityX {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scripts);
     }
+
+
+
 }

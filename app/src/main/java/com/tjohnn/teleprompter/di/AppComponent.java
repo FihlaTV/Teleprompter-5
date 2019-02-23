@@ -3,6 +3,7 @@ package com.tjohnn.teleprompter.di;
 import android.app.Application;
 
 import com.tjohnn.teleprompter.App;
+import com.tjohnn.teleprompter.di.activitymodule.ActivityBindingModule;
 
 import javax.inject.Singleton;
 
@@ -13,7 +14,7 @@ import dagger.android.support.AndroidSupportInjectionModule;
 
 @Singleton
 @Component(modules = {AppModule.class, AndroidSupportInjectionModule.class,
-        RoomModule.class})
+        RoomModule.class, ActivityBindingModule.class, ViewModelBindingModule.class})
 public interface AppComponent extends AndroidInjector<App> {
 
     @Component.Builder

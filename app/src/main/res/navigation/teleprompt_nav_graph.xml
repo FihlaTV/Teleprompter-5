@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/teleprompt_nav_graph.xml"
+    app:startDestination="@id/telepromptFragment">
+
+    <fragment
+        android:id="@+id/telepromptFragment"
+        android:name="com.tjohnn.teleprompter.ui.teleprompt.TelepromptFragment"
+        android:label="fragment_teleprompt"
+        tools:layout="@layout/fragment_teleprompt" />
+</navigation>

@@ -2,8 +2,8 @@
 <fragment android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/activity_scripts_nav_host_fragment"
+    android:id="@+id/activity_teleprompt_nav_host_fragment"
     android:name="androidx.navigation.fragment.NavHostFragment"
-    app:navGraph="@navigation/scripts_nav_graph"
+    app:navGraph="@navigation/teleprompt_nav_graph"
     app:defaultNavHost="true"
     xmlns:android="http://schemas.android.com/apk/res/android" />

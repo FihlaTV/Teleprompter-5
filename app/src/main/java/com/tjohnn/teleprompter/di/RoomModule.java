@@ -12,17 +12,17 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-public abstract class RoomModule {
+abstract class RoomModule {
 
     @Singleton
     @Provides
-    static public AppDatabase appDatabase(Context context){
+    static AppDatabase appDatabase(Context context){
         return Room.databaseBuilder(context, AppDatabase.class, AppDatabase.DATABASE_NAME).build();
     }
 
     @Singleton
     @Provides
-    static public ScriptDao scriptDao(AppDatabase appDatabase){
+    static ScriptDao scriptDao(AppDatabase appDatabase){
         return appDatabase.scriptDao();
     }
 
