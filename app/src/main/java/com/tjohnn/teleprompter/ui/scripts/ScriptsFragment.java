@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
+import com.tjohnn.teleprompter.data.Script;
 
 import javax.inject.Inject;
 
@@ -14,16 +15,27 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class ScriptsFragment extends DaggerFragmentX {
+public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.OnScriptItemListener {
 
     @Inject
     AppCompatActivity mActivity;
 
     @Inject
     ScriptsViewModel mViewModel;
+
+    @Inject
+    ScriptAdapter scriptAdapter;
+
+    @BindView(R.id.rv_scripts)
+    RecyclerView scriptList;
+    @BindView(R.id.empty_list_wrapper)
+    View emptyListMessage;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,7 +47,25 @@ public class ScriptsFragment extends DaggerFragmentX {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_scripts, container, false);
         ButterKnife.bind(this, view);
+        setupAdapterViews();
+        subscribeToViewModel();
         return view;
+    }
+
+    private void subscribeToViewModel() {
+        mViewModel.getScripts().observe(this, scriptList -> {
+            if(scriptList == null || scriptList.isEmpty()){
+                emptyListMessage.setVisibility(View.VISIBLE);
+                return;
+            }
+            emptyListMessage.setVisibility(View.GONE);
+            scriptAdapter.updateItems(scriptList);
+        });
+    }
+
+    private void setupAdapterViews() {
+        scriptList.setLayoutManager(new LinearLayoutManager(mActivity));
+        scriptList.setAdapter(scriptAdapter);
     }
 
 
@@ -43,5 +73,21 @@ public class ScriptsFragment extends DaggerFragmentX {
     void addScript(){
         Navigation.findNavController(mActivity, R.id.activity_scripts_nav_host_fragment)
                 .navigate(R.id.action_scriptsFragment_to_addEditScriptActivity);
+    }
+
+
+    @Override
+    public void onItemEditClicked(Script script) {
+
+    }
+
+    @Override
+    public void onItemDeleteClicked(Script script) {
+
+    }
+
+    @Override
+    public void onItemClicked(Script script) {
+
     }
 }

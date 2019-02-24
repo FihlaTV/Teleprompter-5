@@ -2,8 +2,16 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/whiteSmoke">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_scripts"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/list_item_script"
+        />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_add_script"
@@ -14,4 +22,19 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_24dp"
         />
+    <FrameLayout android:id="@+id/empty_list_wrapper"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/whiteSmoke"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/you_do_not_have_any_script_for_teleprompting"
+            android:gravity="center"/>
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

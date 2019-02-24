@@ -2,6 +2,7 @@ package com.tjohnn.teleprompter.di.activitymodule;
 
 import com.tjohnn.teleprompter.di.annotations.ActivityScoped;
 import com.tjohnn.teleprompter.di.annotations.FragmentScoped;
+import com.tjohnn.teleprompter.ui.scripts.ScriptAdapter;
 import com.tjohnn.teleprompter.ui.scripts.ScriptsActivity;
 import com.tjohnn.teleprompter.ui.scripts.ScriptsFragment;
 import com.tjohnn.teleprompter.ui.scripts.ScriptsViewModel;
@@ -19,7 +20,7 @@ interface ScriptsActivityModule {
 
 
     @FragmentScoped
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = ScriptsFragmentModule.class)
     ScriptsFragment scriptsFragment();
 
     @ActivityScoped
@@ -31,6 +32,12 @@ interface ScriptsActivityModule {
         @Provides
         static ScriptsViewModel scriptsViewModel(ViewModelProvider.Factory factory, ScriptsFragment scriptsFragment){
             return ViewModelProviders.of(scriptsFragment, factory).get(ScriptsViewModel.class);
+        }
+
+        @FragmentScoped
+        @Provides
+        static ScriptAdapter scriptsAdapter(ScriptsFragment scriptsFragment){
+            return new ScriptAdapter(scriptsFragment);
         }
     }
 

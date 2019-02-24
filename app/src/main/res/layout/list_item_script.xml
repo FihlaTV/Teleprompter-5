@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="8dp"
+    android:padding="8dp"
+    android:background="@color/colorWhite">
+
+    <TextView android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:text="First speech at meeting by chairman" />
+
+    <TextView android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_access_time_grey_16dp"
+        android:drawableStart="@drawable/ic_access_time_grey_16dp"
+        tools:text="30th of Oct, 2018"
+        app:layout_constraintTop_toBottomOf="@id/tv_title"
+        android:layout_marginTop="8dp"
+        android:drawablePadding="8dp"/>
+
+    <ImageButton android:id="@+id/btn_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_delete_red_24dp"
+        android:contentDescription="@string/delete_script"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@android:color/transparent"
+        />
+
+
+    <ImageButton android:id="@+id/btn_edit"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/ic_edit_green_24dp"
+        android:contentDescription="@string/delete_script"
+        app:layout_constraintRight_toLeftOf="@id/btn_delete"
+        app:layout_constraintBottom_toBottomOf="@id/btn_delete"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@android:color/transparent"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
