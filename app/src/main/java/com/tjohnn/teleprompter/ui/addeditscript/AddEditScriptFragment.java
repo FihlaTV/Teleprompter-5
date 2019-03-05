@@ -214,7 +214,7 @@ public class AddEditScriptFragment extends DaggerFragmentX {
         Script script = new Script(
                 title.getText().toString(),
                 scriptText.getText().toString(),
-                telepromptCalendar.getTime(),
+                telepromptCalendar == null ? null : telepromptCalendar.getTime(),
                 false,
                 new Date()
         );
