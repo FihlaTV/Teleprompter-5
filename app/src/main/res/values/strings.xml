@@ -2,4 +2,19 @@
     <string name="app_name">Teleprompter</string>
     <string name="delete_script">Delete Script</string>
     <string name="you_do_not_have_any_script_for_teleprompting">You do not have any script for teleprompting</string>
+    <string name="enter_script_title">Enter script title</string>
+    <string name="enter_script_text">Enter script text</string>
+    <string name="import_script">Import Script</string>
+    <string name="submit">Submit</string>
+    <string name="unable_to_read_file">Unable to read file.</string>
+    <string name="unable_to_read_selected_file">Unable to read selected file.</string>
+    <string name="invalid_file_type_selected">Invalid file type selected</string>
+    <string name="select_teleprompting_time">Select teleprompting time</string>
+    <string name="select_date">Select date</string>
+    <string name="select_time">Select time</string>
+    <string name="select_date_before_time">Please select date before time.</string>
+    <string name="title_may_not_be_empty">Script title may not be empty.</string>
+    <string name="script_text_may_not_be_empty">Script text may not be empty.</string>
+    <string name="teleprompting_date_must_be_after_now">Teleprompting date must be after current time.</string>
+    <string name="script_added">Script added.</string>
 </resources>

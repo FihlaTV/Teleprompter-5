@@ -7,4 +7,5 @@
     app:navGraph="@navigation/add_edit_script_nav_graph"
     app:defaultNavHost="true"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:maxWidth="600dp"
     />

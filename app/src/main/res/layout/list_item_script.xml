@@ -11,7 +11,10 @@
     <TextView android:id="@+id/tv_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="First speech at meeting by chairman" />
+        tools:text="First speech at meeting by chairman"
+        android:textSize="18sp"
+        android:textColor="@color/colorPrimaryText"
+        />
 
     <TextView android:id="@+id/tv_date"
         android:layout_width="wrap_content"
