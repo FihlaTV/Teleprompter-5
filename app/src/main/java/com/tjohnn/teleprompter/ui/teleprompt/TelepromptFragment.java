@@ -14,6 +14,7 @@ import butterknife.ButterKnife;
 
 public class TelepromptFragment extends DaggerFragmentX {
 
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

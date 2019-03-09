@@ -28,6 +28,11 @@ public class ScriptRepository {
     }
 
 
+    public Completable deleteScript(Script script){
+        return Completable.fromAction(() -> scriptDao.deleteScript(script));
+    }
+
+
     public Completable saveScript(Script script){
         // if script id is zero, created a new script
         if(script.getId() <= 0){

@@ -87,7 +87,7 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
 
     @Override
     public void onItemDeleteClicked(Script script) {
-
+        mViewModel.deleteScript(script);
     }
 
     @Override

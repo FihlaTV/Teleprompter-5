@@ -10,7 +10,7 @@ import androidx.lifecycle.AndroidViewModel;
 public class TelepromptViewModel extends AndroidViewModel {
 
     @Inject
-    public TelepromptViewModel(@NonNull Application application) {
+    TelepromptViewModel(@NonNull Application application) {
         super(application);
     }
 
