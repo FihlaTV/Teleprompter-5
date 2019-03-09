@@ -27,6 +27,7 @@ public class AddEditScriptViewModel extends AndroidViewModel {
     private MutableLiveData<RxEventWrapper<String>> snackBarMessage = new MutableLiveData<>();
     private MutableLiveData<RxEventWrapper<Boolean>> onScriptAdded = new MutableLiveData<>();
     private MutableLiveData<RxEventWrapper<String>> formError = new MutableLiveData<>();
+    private LiveData<Script> script = new MutableLiveData<>();
 
     @Inject
     public AddEditScriptViewModel(@NonNull Application application,
@@ -56,7 +57,7 @@ public class AddEditScriptViewModel extends AndroidViewModel {
         }
 
         compositeDisposable.add(
-                scriptRepository.insertScript(script)
+                scriptRepository.saveScript(script)
                 .subscribeOn(schedulers.io())
                 .observeOn(schedulers.main())
                 .subscribe(
@@ -67,6 +68,13 @@ public class AddEditScriptViewModel extends AndroidViewModel {
 
     }
 
+    void loadScript(long id){
+        script = scriptRepository.getScriptById(id);
+    }
+
+    public LiveData<Script> getScript() {
+        return script;
+    }
 
     LiveData<RxEventWrapper<String>> getSnackBarMessage() {
         return snackBarMessage;

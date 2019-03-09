@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
 import com.tjohnn.teleprompter.data.Script;
+import com.tjohnn.teleprompter.ui.addeditscript.AddEditScriptFragment;
 
 import javax.inject.Inject;
 
@@ -78,7 +79,10 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
 
     @Override
     public void onItemEditClicked(Script script) {
-
+        Bundle bundle = new Bundle();
+        bundle.putLong(AddEditScriptFragment.SCRIPT_ID_KEY, script.getId());
+        Navigation.findNavController(mActivity, R.id.activity_scripts_nav_host_fragment)
+                .navigate(R.id.action_scriptsFragment_to_addEditScriptActivity, bundle);
     }
 
     @Override

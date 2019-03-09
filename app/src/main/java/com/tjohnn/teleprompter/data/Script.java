@@ -40,6 +40,9 @@ public class Script {
         this.createdAt = createdAt;
     }
 
+    public Script() {
+    }
+
     public long getId() {
         return id;
     }

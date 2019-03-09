@@ -17,4 +17,5 @@
     <string name="script_text_may_not_be_empty">Script text may not be empty.</string>
     <string name="teleprompting_date_must_be_after_now">Teleprompting date must be after current time.</string>
     <string name="script_added">Script added.</string>
+    <string name="script_saved">Script saved.</string>
 </resources>

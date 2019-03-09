@@ -43,8 +43,11 @@ import timber.log.Timber;
 public class AddEditScriptFragment extends DaggerFragmentX {
 
     private int PICK_FILE_RESULT_CODE = 45;
+    public static final String SCRIPT_ID_KEY = "SCRIPT_ID_KEY";
 
-    public static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
+    private static final String MIME_TYPE_PLAIN_TEXT = "text/plain";
+
+    private long mScriptId;
 
     @Inject
     AppCompatActivity mActivity;
@@ -65,14 +68,14 @@ public class AddEditScriptFragment extends DaggerFragmentX {
 
     private Calendar telepromptCalendar;
 
-    DatePickerDialog.OnDateSetListener mDateListener = (view, year, monthOfYear, dayOfMonth) -> {
+    private DatePickerDialog.OnDateSetListener mDateListener = (view, year, monthOfYear, dayOfMonth) -> {
         telepromptCalendar.set(Calendar.YEAR, year);
         telepromptCalendar.set(Calendar.MONTH, monthOfYear);
         telepromptCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         telepromptDate.setText(DateUtils.calendarToDateFormat(telepromptCalendar));
     };
 
-    TimePickerDialog.OnTimeSetListener mTimeListener = (timePicker, hour, minute) -> {
+    private TimePickerDialog.OnTimeSetListener mTimeListener = (timePicker, hour, minute) -> {
         telepromptCalendar.set(Calendar.HOUR_OF_DAY, hour);
         telepromptCalendar.set(Calendar.MINUTE, minute);
         telepromptTime.setText(DateUtils.calendarToTime12(telepromptCalendar));
@@ -82,6 +85,13 @@ public class AddEditScriptFragment extends DaggerFragmentX {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        if(getArguments() != null){
+            mScriptId = getArguments().getLong(SCRIPT_ID_KEY, 0);
+        }
+
+        if(mScriptId > 0){
+            mViewModel.loadScript(mScriptId);
+        }
     }
 
     @Nullable
@@ -104,9 +114,21 @@ public class AddEditScriptFragment extends DaggerFragmentX {
             }
         });
 
+        mViewModel.getScript().observe(this, script -> {
+            if(script != null ){
+                title.setText(script.getTitle());
+                scriptText.setText(script.getText());
+                telepromptCalendar = Calendar.getInstance();
+                telepromptCalendar.setTime(script.getTelepromptingDate());
+
+                telepromptDate.setText(DateUtils.calendarToDateFormat(telepromptCalendar));
+                telepromptTime.setText(DateUtils.calendarToTime12(telepromptCalendar));
+            }
+        });
+
         mViewModel.getOnScriptAdded().observe(this, r -> {
             if(r != null && r.getContentIfNotUsed() != null && r.peekContent()){
-                Toast.makeText(mActivity, R.string.script_added, Toast.LENGTH_LONG).show();
+                Toast.makeText(mActivity, R.string.script_saved, Toast.LENGTH_LONG).show();
                 mActivity.onSupportNavigateUp();
             }
         });
@@ -211,13 +233,21 @@ public class AddEditScriptFragment extends DaggerFragmentX {
 
     @OnClick(R.id.btn_submit)
     void submit(){
-        Script script = new Script(
-                title.getText().toString(),
-                scriptText.getText().toString(),
-                telepromptCalendar == null ? null : telepromptCalendar.getTime(),
-                false,
-                new Date()
-        );
+        Script script = mViewModel.getScript().getValue();
+        if(script == null) {
+            script = new Script(
+                    title.getText().toString(),
+                    scriptText.getText().toString(),
+                    telepromptCalendar == null ? null : telepromptCalendar.getTime(),
+                    false,
+                    new Date()
+            );
+        } else {
+            script.setTitle(title.getText().toString());
+            script.setText(scriptText.getText().toString());
+            script.setTelepromptingDate(telepromptCalendar == null ? null : telepromptCalendar.getTime());
+        }
+
         mViewModel.saveScript(script);
     }
 

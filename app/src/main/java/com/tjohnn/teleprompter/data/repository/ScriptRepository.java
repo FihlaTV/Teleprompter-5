@@ -23,8 +23,17 @@ public class ScriptRepository {
         return scriptDao.getAll();
     }
 
+    public LiveData<Script> getScriptById(long id){
+        return scriptDao.getById(id);
+    }
 
-    public Completable insertScript(Script script){
-        return Completable.fromAction(() -> scriptDao.insertScript(script));
+
+    public Completable saveScript(Script script){
+        // if script id is zero, created a new script
+        if(script.getId() <= 0){
+            return Completable.fromAction(() -> scriptDao.insertScript(script));
+        } else {
+            return Completable.fromAction(() -> scriptDao.updateScript(script));
+        }
     }
 }
