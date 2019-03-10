@@ -25,7 +25,16 @@ public class AddEditScriptActivity extends DaggerAppCompatActivityX {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        long scriptId = getIntent().getLongExtra(AddEditScriptFragment.SCRIPT_ID_KEY, 0);;
+        setupNavHost();
+
+    }
+
+    /**
+     * Sets up the navhost fragment to allow sending args to the startDestination fragment
+     */
+    private void setupNavHost() {
+
+        long scriptId = getIntent().getLongExtra(AddEditScriptFragment.SCRIPT_ID_KEY, 0);
 
         NavHostFragment hostFragment = (NavHostFragment) getSupportFragmentManager().findFragmentById(R.id.activity_add_edit_script_nav_host_fragment);
         navController = hostFragment.getNavController();

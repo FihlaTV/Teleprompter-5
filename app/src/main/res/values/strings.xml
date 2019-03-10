@@ -18,4 +18,6 @@
     <string name="teleprompting_date_must_be_after_now">Teleprompting date must be after current time.</string>
     <string name="script_added">Script added.</string>
     <string name="script_saved">Script saved.</string>
+    <string name="speed">Speed</string>
+    <string name="pause_and_play">Pause and Play</string>
 </resources>

@@ -87,6 +87,8 @@ public class AddEditScriptFragment extends DaggerFragmentX {
         setHasOptionsMenu(true);
         if(getArguments() != null){
             mScriptId = getArguments().getLong(SCRIPT_ID_KEY, 0);
+        } else if (savedInstanceState != null) {
+            mScriptId = savedInstanceState.getLong(SCRIPT_ID_KEY, 0);
         }
 
         if(mScriptId > 0){
@@ -134,6 +136,12 @@ public class AddEditScriptFragment extends DaggerFragmentX {
         });
 
 
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putLong(SCRIPT_ID_KEY, mScriptId);
+        super.onSaveInstanceState(outState);
     }
 
     @Override

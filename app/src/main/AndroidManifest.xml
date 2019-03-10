@@ -29,7 +29,9 @@
                 android:value=".ui.scripts.ScriptsActivity" />
         </activity>
         <activity android:name=".ui.teleprompt.TelepromptActivity">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ui.scripts.ScriptsActivity" />
         </activity>
     </application>
 
