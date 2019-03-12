@@ -9,6 +9,7 @@ import javax.inject.Inject;
 
 import androidx.lifecycle.LiveData;
 import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public class ScriptRepository {
 
@@ -40,5 +41,9 @@ public class ScriptRepository {
         } else {
             return Completable.fromAction(() -> scriptDao.updateScript(script));
         }
+    }
+
+    public Single<Script> getScriptByIdSingle(long scriptId) {
+        return scriptDao.getScriptByIdSingle(scriptId);
     }
 }

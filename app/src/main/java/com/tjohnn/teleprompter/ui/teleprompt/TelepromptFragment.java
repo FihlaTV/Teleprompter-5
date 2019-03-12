@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageButton;
 import android.widget.ScrollView;
@@ -16,10 +18,13 @@ import android.widget.TextView;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
 
+import java.util.Timer;
+
 import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import timber.log.Timber;
@@ -33,6 +38,8 @@ public class TelepromptFragment extends DaggerFragmentX {
 
     @Inject
     TelepromptViewModel mViewModel;
+    @Inject
+    AppCompatActivity mActivity;
 
     @BindView(R.id.scroll_view)
     ScrollView mScrollView;
@@ -98,16 +105,35 @@ public class TelepromptFragment extends DaggerFragmentX {
         pausePlay.setOnClickListener(v -> {
             if(mAnimator != null && mAnimator.isRunning()){
                 mAnimator.cancel();
-                pausePlay.setImageResource(R.drawable.ic_play_arrow_orange_24dp);
+
+            } else if(!mScrollView.canScrollVertically(1)){
+                mScrollView.smoothScrollTo(0, 0);
+
+                // allow ui to finish scrolling to top before starting animation
+                new Handler().postDelayed(() -> mActivity.runOnUiThread(this::animateScroll), 600);
             } else {
                 animateScroll();
-                pausePlay.setImageResource(R.drawable.ic_pause_orange_24dp);
             }
         });
 
         stop.setOnClickListener(v -> {
             mAnimator.cancel();
             mScrollView.smoothScrollTo(0, 0);
+        });
+
+        // listen to when animation scroll ends
+        mScrollView.getViewTreeObserver().addOnScrollChangedListener(() -> {
+            if(!mScrollView.canScrollVertically(1)){
+                // mark as teleprompted when finished
+                mViewModel.markComplete();
+
+                // animation is not stopping itself when scrolling complete
+                // so stopping is done manually, need to look into this later
+                mAnimator.cancel();
+
+
+                pausePlay.setImageResource(R.drawable.ic_play_arrow_orange_24dp);
+            }
         });
     }
 
@@ -157,7 +183,7 @@ public class TelepromptFragment extends DaggerFragmentX {
 
             @Override
             public void onAnimationStart(Animator arg0) {
-
+                pausePlay.setImageResource(R.drawable.ic_pause_orange_24dp);
             }
 
             @Override
@@ -167,13 +193,12 @@ public class TelepromptFragment extends DaggerFragmentX {
 
             @Override
             public void onAnimationEnd(Animator arg0) {
-                // mark as teleprompted when finished
-                mViewModel.markComplete(mScriptId);
+
             }
 
             @Override
             public void onAnimationCancel(Animator arg0) {
-
+                pausePlay.setImageResource(R.drawable.ic_play_arrow_orange_24dp);
             }
         });
         mAnimator.start();

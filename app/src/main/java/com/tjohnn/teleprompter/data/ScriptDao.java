@@ -8,6 +8,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
+import io.reactivex.Single;
 
 @Dao
 public interface ScriptDao {
@@ -21,9 +22,14 @@ public interface ScriptDao {
     @Query("SELECT * FROM scripts WHERE id = :id")
     LiveData<Script> getById(long id);
 
+    // Needed for teleprompting screen, we do not need ui to keep updating while teleprompting
+    @Query("SELECT * FROM scripts WHERE id = :id")
+    Single<Script> getScriptByIdSingle(long id);
+
     @Update
     void updateScript(Script script);
 
     @Delete
     void deleteScript(Script script);
+
 }
