@@ -94,6 +94,21 @@ public class TelepromptFragment extends DaggerFragmentX {
 
             }
         });
+
+        pausePlay.setOnClickListener(v -> {
+            if(mAnimator != null && mAnimator.isRunning()){
+                mAnimator.cancel();
+                pausePlay.setImageResource(R.drawable.ic_play_arrow_orange_24dp);
+            } else {
+                animateScroll();
+                pausePlay.setImageResource(R.drawable.ic_pause_orange_24dp);
+            }
+        });
+
+        stop.setOnClickListener(v -> {
+            mAnimator.cancel();
+            mScrollView.smoothScrollTo(0, 0);
+        });
     }
 
     private void subscribeToViewModel() {
@@ -120,27 +135,18 @@ public class TelepromptFragment extends DaggerFragmentX {
         int speed = seekBar.getProgress();
 
         // we have the slower scroll speed with a higher value of speed multiplier
-        // if speed form seekbar is 0, then we have (26 - 0) as multiplier,
+        // if speed form seek bar is 0, then we have (26 - 0) as multiplier,
         // if speed = 16, the we have (26 - 16) which is the fastest etc
         int speedMultiplier = MAX_SCROLL_DURATION_MULTIPLIER - speed;
 
-        // get the remaining size-y of the view needed to be scrolled
-        int bottom = scriptText.getBottom() + mScrollView.getPaddingBottom();
-        int scrollPositionY = mScrollView.getScrollY();
-        int scrollHeight = mScrollView.getHeight();
-        int y = bottom - (scrollPositionY + scrollHeight);
+        // we are scrolling to the bottom of #scriptText
+        int y = scriptText.getBottom() + mScrollView.getPaddingBottom();
 
         //long duration = y * 26; // slowest
         long duration = y * speedMultiplier;
 
-        Timber.d("Bottom is %s, scrollPositionY is %s, scrollHeight is %s, Ati y gangan: %s",
-                bottom, scrollPositionY, scrollHeight, y);
-
-
-
         ObjectAnimator xTranslate = ObjectAnimator.ofInt(mScrollView, "scrollX", x);
         ObjectAnimator yTranslate = ObjectAnimator.ofInt(mScrollView, "scrollY", y);
-
 
         mAnimator = new AnimatorSet();
 
@@ -151,24 +157,22 @@ public class TelepromptFragment extends DaggerFragmentX {
 
             @Override
             public void onAnimationStart(Animator arg0) {
-                // TODO Auto-generated method stub
+
             }
 
             @Override
             public void onAnimationRepeat(Animator arg0) {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void onAnimationEnd(Animator arg0) {
-                // TODO Auto-generated method stub
-
+                // mark as teleprompted when finished
+                mViewModel.markComplete(mScriptId);
             }
 
             @Override
             public void onAnimationCancel(Animator arg0) {
-                // TODO Auto-generated method stub
 
             }
         });

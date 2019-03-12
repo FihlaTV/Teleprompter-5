@@ -30,4 +30,8 @@ public class TelepromptViewModel extends AndroidViewModel {
     public LiveData<Script> getScript() {
         return script;
     }
+
+    public void markComplete(long mScriptId) {
+
+    }
 }
