@@ -54,7 +54,7 @@ public class TelepromptViewModel extends AndroidViewModel {
         return snackBarMessage;
     }
 
-    public void markComplete() {
+    void markComplete() {
         Script script = this.script.getValue();
         if (script != null) {
             script.setTeleprompted(true);

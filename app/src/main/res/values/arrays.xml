@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="pref_theme_entries_label">
+        <item>@string/pref_theme_light_label</item>
+        <item>@string/pref_theme_dark_label</item>
+    </string-array>
+    <string-array name="pref_theme_entries">
+        <item>@string/pref_theme_light</item>
+        <item>@string/pref_theme_dark</item>
+    </string-array>
+    
+    
+    <string-array name="pref_font_size_entries_label">
+        <item>@string/pref_font_size_small_label</item>
+        <item>@string/pref_font_size_normal_label</item>
+        <item>@string/pref_font_size_large_label</item>
+        <item>@string/pref_font_size_huge_label</item>
+    </string-array>
+    
+    <integer-array name="pref_font_size_entries">
+        <item>@string/small_teleprompt_font_size</item>
+        <item>@string/normal_teleprompt_font_size</item>
+        <item>@string/large_teleprompt_font_size</item>
+        <item>@string/huge_teleprompt_font_size</item>
+    </integer-array>
+</resources>

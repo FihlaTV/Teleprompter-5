@@ -3,9 +3,16 @@ package com.tjohnn.teleprompter.ui.teleprompt;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
+import android.graphics.Color;
+import android.icu.util.MeasureUnit;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -15,8 +22,12 @@ import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
+import com.tjohnn.teleprompter.data.PreferenceHelper;
+import com.tjohnn.teleprompter.ui.settings.SettingsActivity;
+import com.tjohnn.teleprompter.utils.TimberTree;
 
 import java.util.Timer;
 
@@ -32,6 +43,7 @@ import timber.log.Timber;
 public class TelepromptFragment extends DaggerFragmentX {
 
     public static final String SCRIPT_ID_KEY = "SCRIPT_ID_KEY";
+    public static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
     public static final int MIN_SCROLL_DURATION_MULTIPLIER = 10; // fastest multiplier
     public static final int MAX_SCROLL_DURATION_MULTIPLIER = 26; // slowest multiplier
     private long mScriptId;
@@ -40,6 +52,8 @@ public class TelepromptFragment extends DaggerFragmentX {
     TelepromptViewModel mViewModel;
     @Inject
     AppCompatActivity mActivity;
+    @Inject
+    PreferenceHelper preferenceHelper;
 
     @BindView(R.id.scroll_view)
     ScrollView mScrollView;
@@ -52,7 +66,10 @@ public class TelepromptFragment extends DaggerFragmentX {
     @BindView(R.id.btn_stop)
     ImageButton stop;
 
+
     private AnimatorSet mAnimator;
+    private double scrollPosition;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,13 +77,19 @@ public class TelepromptFragment extends DaggerFragmentX {
 
         if(getArguments() != null){
             mScriptId = getArguments().getLong(SCRIPT_ID_KEY, 0);
-        } else if (savedInstanceState != null) {
+        }
+        if (savedInstanceState != null) {
+            Timber.d("savedInstanceState: " + savedInstanceState.toString());
+            scrollPosition = savedInstanceState.getDouble(SCROLL_POSITION_KEY, 0);
+
             mScriptId = savedInstanceState.getLong(SCRIPT_ID_KEY, 0);
         }
 
         if(mScriptId > 0){
             mViewModel.loadScript(mScriptId);
         }
+
+        setHasOptionsMenu(true);
     }
 
     @Nullable
@@ -79,9 +102,27 @@ public class TelepromptFragment extends DaggerFragmentX {
         return view;
     }
 
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_teleprompt, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.action_settings){
+            startActivity(new Intent(mActivity, SettingsActivity.class));
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -129,7 +170,9 @@ public class TelepromptFragment extends DaggerFragmentX {
 
                 // animation is not stopping itself when scrolling complete
                 // so stopping is done manually, need to look into this later
-                mAnimator.cancel();
+                if(mAnimator != null) {
+                    mAnimator.cancel();
+                }
 
 
                 pausePlay.setImageResource(R.drawable.ic_play_arrow_orange_24dp);
@@ -137,11 +180,47 @@ public class TelepromptFragment extends DaggerFragmentX {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // set theme from preferences
+        int fontSize = preferenceHelper.getTelepromptTextSize();
+        scriptText.setTextSize(TypedValue.COMPLEX_UNIT_SP, fontSize);
+        String theme = preferenceHelper.getTelepromptTheme();
+        if(getString(R.string.pref_theme_light).equals(theme)){
+            scriptText.setBackgroundColor(Color.WHITE);
+            scriptText.setTextColor(Color.BLACK);
+        } else if(getString(R.string.pref_theme_dark).equals(theme)) {
+            scriptText.setBackgroundColor(Color.BLACK);
+            scriptText.setTextColor(Color.WHITE);
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if(mAnimator != null){
+            mAnimator.cancel();
+        }
+    }
+
     private void subscribeToViewModel() {
         mViewModel.getScript().observe(this, script -> {
             if(script != null){
                 scriptText.setText(script.getText());
-                scriptText.post(this::animateScroll);
+                // scriptText.post(this::animateScroll);
+
+                scriptText.post(() -> {
+                    int pos = new Double(scriptText.getHeight() * scrollPosition).intValue();
+                    mScrollView.scrollTo(0, pos);
+                });
+            }
+        });
+
+        mViewModel.getSnackBarMessage().observe(this, r -> {
+            if(r != null && r.getContentIfNotUsed() != null){
+                Snackbar.make(getView(), r.peekContent(), Snackbar.LENGTH_LONG).show();
             }
         });
     }
@@ -150,15 +229,23 @@ public class TelepromptFragment extends DaggerFragmentX {
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putLong(SCRIPT_ID_KEY, mScriptId);
+
+        // it is okay to save the percent for accurate repositioning of scroll bar
+        // due to the difference in screen size of a device for different orientations
+        int pos = mScrollView.getScrollY();
+        float percentageScroll = pos * 1.0f / scriptText.getHeight();
+
+        outState.putDouble(SCROLL_POSITION_KEY, percentageScroll);
+
         super.onSaveInstanceState(outState);
     }
-
 
     private void animateScroll() {
 
         int x = 0;
 
         int speed = seekBar.getProgress();
+        Timber.d("Speed: " + speed);
 
         // we have the slower scroll speed with a higher value of speed multiplier
         // if speed form seek bar is 0, then we have (26 - 0) as multiplier,

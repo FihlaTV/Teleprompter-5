@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:defaultValue="@string/pref_theme_light"
+        android:entries="@array/pref_theme_entries_label"
+        android:entryValues="@array/pref_theme_entries"
+        android:key="@string/pref_teleprompt_theme_key"
+        android:title="@string/theme"
+        />
+
+    <ListPreference
+        android:defaultValue="@string/normal_teleprompt_font_size"
+        android:entries="@array/pref_font_size_entries_label"
+        android:entryValues="@array/pref_font_size_entries"
+        android:key="@string/pref_teleprompt_font_size_key"
+        android:title="@string/font_size"
+        />
+</PreferenceScreen>

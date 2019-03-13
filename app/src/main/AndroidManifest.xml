@@ -3,9 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.tjohnn.teleprompter">
 
-    <uses-permission
-        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".App"
@@ -23,7 +21,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.addeditscript.AddEditScriptActivity" >
+        <activity android:name=".ui.addeditscript.AddEditScriptActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.scripts.ScriptsActivity" />
@@ -33,6 +31,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ui.scripts.ScriptsActivity" />
         </activity>
+        <activity android:name=".ui.settings.SettingsActivity"></activity>
     </application>
 
 </manifest>

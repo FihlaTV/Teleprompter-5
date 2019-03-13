@@ -23,13 +23,15 @@ public class TelepromptActivity extends DaggerAppCompatActivityX {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        setupNavHost();
+        if(savedInstanceState == null){
+            inflateNavHost();
+        }
     }
 
     /**
      * Sets up the navhost fragment to allow sending args to the startDestination fragment
      */
-    private void setupNavHost() {
+    private void inflateNavHost() {
         // get script id
         long scriptId = getIntent().getLongExtra(AddEditScriptFragment.SCRIPT_ID_KEY, 0);
 

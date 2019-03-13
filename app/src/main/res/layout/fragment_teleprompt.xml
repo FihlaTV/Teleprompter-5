@@ -8,13 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/control_wrapper"
-        android:padding="12dp">
+        app:layout_constraintBottom_toTopOf="@+id/control_wrapper">
         <TextView android:id="@+id/tv_script_text"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="wrap_content"
             android:textSize="24sp"
             android:textColor="#000"
+            android:padding="12dp"
+            android:singleLine="false"
             />
     </ScrollView>
     <androidx.constraintlayout.widget.ConstraintLayout
