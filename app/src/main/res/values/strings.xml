@@ -43,6 +43,7 @@
     <string name="normal_teleprompt_font_size" translatable="false">24</string>
     <string name="large_teleprompt_font_size" translatable="false">32</string>
     <string name="huge_teleprompt_font_size" translatable="false">40</string>
+    <string name="are_you_sure_to_delete_script">Are you sure to delete \"%1$s\"?</string>
 
 
 </resources>

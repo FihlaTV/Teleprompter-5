@@ -20,6 +20,8 @@ public class Script {
 
     private boolean isTeleprompted;
 
+    private float scrollPosition;
+
     private Date createdAt;
 
     public Script(long id, String title, String text, Date telepromptingDate, boolean isTeleprompted, Date createdAt) {
@@ -89,5 +91,13 @@ public class Script {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public float getScrollPosition() {
+        return scrollPosition;
+    }
+
+    public void setScrollPosition(float scrollPosition) {
+        this.scrollPosition = scrollPosition;
     }
 }

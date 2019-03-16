@@ -43,9 +43,9 @@ import timber.log.Timber;
 public class TelepromptFragment extends DaggerFragmentX {
 
     public static final String SCRIPT_ID_KEY = "SCRIPT_ID_KEY";
-    public static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
+    private static final String SCROLL_POSITION_KEY = "SCROLL_POSITION_KEY";
     public static final int MIN_SCROLL_DURATION_MULTIPLIER = 10; // fastest multiplier
-    public static final int MAX_SCROLL_DURATION_MULTIPLIER = 26; // slowest multiplier
+    private static final int MAX_SCROLL_DURATION_MULTIPLIER = 26; // slowest multiplier
     private long mScriptId;
 
     @Inject
@@ -209,8 +209,9 @@ public class TelepromptFragment extends DaggerFragmentX {
         mViewModel.getScript().observe(this, script -> {
             if(script != null){
                 scriptText.setText(script.getText());
-                // scriptText.post(this::animateScroll);
 
+                // set scroll position to the one saved the database if current is less than or equals to zero
+                scrollPosition = scrollPosition <= 0 ? script.getScrollPosition() : scrollPosition;
                 scriptText.post(() -> {
                     int pos = new Double(scriptText.getHeight() * scrollPosition).intValue();
                     mScrollView.scrollTo(0, pos);
@@ -230,22 +231,33 @@ public class TelepromptFragment extends DaggerFragmentX {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putLong(SCRIPT_ID_KEY, mScriptId);
 
-        // it is okay to save the percent for accurate repositioning of scroll bar
-        // due to the difference in screen size of a device for different orientations
-        int pos = mScrollView.getScrollY();
-        float percentageScroll = pos * 1.0f / scriptText.getHeight();
 
-        outState.putDouble(SCROLL_POSITION_KEY, percentageScroll);
+
+        outState.putDouble(SCROLL_POSITION_KEY, getScrollingPositionPercent());
 
         super.onSaveInstanceState(outState);
     }
+
+    private float getScrollingPositionPercent(){
+        // it is okay to save the percent for accurate repositioning of scroll bar
+        // due to the difference in screen size of a device for different orientations
+        int pos = mScrollView.getScrollY();
+        return pos * 1.0f / scriptText.getHeight();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        mViewModel.saveScrollingPosition(getScrollingPositionPercent());
+        super.onDestroy();
+    }
+
 
     private void animateScroll() {
 
         int x = 0;
 
         int speed = seekBar.getProgress();
-        Timber.d("Speed: " + speed);
 
         // we have the slower scroll speed with a higher value of speed multiplier
         // if speed form seek bar is 0, then we have (26 - 0) as multiplier,

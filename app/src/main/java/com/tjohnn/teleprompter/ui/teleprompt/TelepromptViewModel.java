@@ -16,6 +16,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import io.reactivex.disposables.CompositeDisposable;
+import timber.log.Timber;
 
 public class TelepromptViewModel extends AndroidViewModel {
 
@@ -71,4 +72,23 @@ public class TelepromptViewModel extends AndroidViewModel {
         }
 
     }
+
+    void saveScrollingPosition(float positionPercent) {
+        Script script = this.script.getValue();
+        if (script != null) {
+            script.setScrollPosition(positionPercent);
+            compositeDisposable.add(
+                    scriptRepository.saveScript(script)
+                            .subscribeOn(schedulers.io())
+                            .observeOn(schedulers.main())
+                            .subscribe(
+                                    () -> {
+                                    }, throwable -> Timber.d(throwable.getMessage())
+                            )
+            );
+
+        }
+
+    }
+
 }

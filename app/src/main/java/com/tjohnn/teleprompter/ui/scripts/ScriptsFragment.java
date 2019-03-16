@@ -1,5 +1,6 @@
 package com.tjohnn.teleprompter.ui.scripts;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import javax.inject.Inject;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -88,7 +90,13 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
 
     @Override
     public void onItemDeleteClicked(Script script) {
-        mViewModel.deleteScript(script);
+        new AlertDialog.Builder(mActivity)
+                .setMessage(getString(R.string.are_you_sure_to_delete_script, script.getTitle()))
+                .setPositiveButton(android.R.string.yes, (dialog1, which) -> {
+                    mViewModel.deleteScript(script);
+                })
+                .setNegativeButton(android.R.string.no, null)
+                .show();
     }
 
     @Override
