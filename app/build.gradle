@@ -16,6 +16,15 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    flavorDimensions "default"
+    productFlavors {
+        free {
+            applicationId "com.tjohnn.teleprompter.free"
+        }
+        paid {
+            applicationId "com.tjohnn.teleprompter.paid"
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -45,6 +54,7 @@ dependencies {
         androidTestVersion = '1.1.1'
 
         playServicesVersion = '16.0.0'
+        googleAdsVersion = '17.1.2'
     }
 
 
@@ -89,6 +99,10 @@ dependencies {
 
     implementation "android.arch.navigation:navigation-fragment:$navVersion"
     implementation "android.arch.navigation:navigation-ui:$navVersion"
+
+
+    // google ads
+    freeImplementation "com.google.android.gms:play-services-ads:$googleAdsVersion"
 
     testImplementation 'junit:junit:4.12'
 

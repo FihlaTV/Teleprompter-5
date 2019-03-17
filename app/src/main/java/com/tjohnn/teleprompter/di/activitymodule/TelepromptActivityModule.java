@@ -2,8 +2,6 @@ package com.tjohnn.teleprompter.di.activitymodule;
 
 import com.tjohnn.teleprompter.di.annotations.ActivityScoped;
 import com.tjohnn.teleprompter.di.annotations.FragmentScoped;
-import com.tjohnn.teleprompter.ui.scripts.ScriptsActivity;
-import com.tjohnn.teleprompter.ui.scripts.ScriptsFragment;
 import com.tjohnn.teleprompter.ui.teleprompt.TelepromptActivity;
 import com.tjohnn.teleprompter.ui.teleprompt.TelepromptFragment;
 import com.tjohnn.teleprompter.ui.teleprompt.TelepromptViewModel;

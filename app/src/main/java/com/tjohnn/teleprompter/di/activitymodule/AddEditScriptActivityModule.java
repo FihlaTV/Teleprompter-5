@@ -5,8 +5,6 @@ import com.tjohnn.teleprompter.di.annotations.FragmentScoped;
 import com.tjohnn.teleprompter.ui.addeditscript.AddEditScriptActivity;
 import com.tjohnn.teleprompter.ui.addeditscript.AddEditScriptFragment;
 import com.tjohnn.teleprompter.ui.addeditscript.AddEditScriptViewModel;
-import com.tjohnn.teleprompter.ui.scripts.ScriptsActivity;
-import com.tjohnn.teleprompter.ui.scripts.ScriptsFragment;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;

@@ -53,7 +53,7 @@ public class AddEditScriptActivity extends DaggerAppCompatActivityX {
 
         switch (item.getItemId()){
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                onBackPressed();
                 return true;
         }
 

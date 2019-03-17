@@ -131,7 +131,7 @@ public class AddEditScriptFragment extends DaggerFragmentX {
         mViewModel.getOnScriptAdded().observe(this, r -> {
             if(r != null && r.getContentIfNotUsed() != null && r.peekContent()){
                 Toast.makeText(mActivity, R.string.script_saved, Toast.LENGTH_LONG).show();
-                mActivity.onSupportNavigateUp();
+                mActivity.onBackPressed();
             }
         });
 

@@ -1,6 +1,5 @@
 package com.tjohnn.teleprompter.ui.scripts;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
