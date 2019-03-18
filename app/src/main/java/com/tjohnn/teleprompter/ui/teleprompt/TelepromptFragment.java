@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.tjohnn.teleprompter.AppWidgetIntentService;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
 import com.tjohnn.teleprompter.data.PreferenceHelper;
@@ -222,6 +223,13 @@ public class TelepromptFragment extends DaggerFragmentX {
         mViewModel.getSnackBarMessage().observe(this, r -> {
             if(r != null && r.getContentIfNotUsed() != null){
                 Snackbar.make(getView(), r.peekContent(), Snackbar.LENGTH_LONG).show();
+            }
+        });
+
+        mViewModel.getMarkedComplete().observe(this, r -> {
+            if(r != null && r.getContentIfNotUsed() != null && r.peekContent()){
+                // update widget
+                AppWidgetIntentService.startActionUpdateScriptWidgets(mActivity.getApplicationContext());
             }
         });
     }

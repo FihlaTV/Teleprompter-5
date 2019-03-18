@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.tjohnn.teleprompter.AppWidgetIntentService;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
 import com.tjohnn.teleprompter.data.Script;
@@ -78,6 +79,13 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
             }
             emptyListMessage.setVisibility(View.GONE);
             scriptAdapter.updateItems(scriptList);
+        });
+
+        mViewModel.getOnScriptDeleted().observe(this, r -> {
+            if(r != null && r.getContentIfNotUsed() != null && r.peekContent()){
+                // update widget
+                AppWidgetIntentService.startActionUpdateScriptWidgets(mActivity.getApplicationContext());
+            }
         });
     }
 

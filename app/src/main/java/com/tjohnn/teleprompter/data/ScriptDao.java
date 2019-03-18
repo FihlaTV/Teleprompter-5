@@ -32,4 +32,7 @@ public interface ScriptDao {
     @Delete
     void deleteScript(Script script);
 
+    // get
+    @Query("SELECT * FROM scripts WHERE isTeleprompted = 0 ORDER BY telepromptingDate ASC LIMIT 1")
+    List<Script> getNextScript();
 }

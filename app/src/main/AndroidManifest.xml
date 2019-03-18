@@ -21,11 +21,20 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.addeditscript.AddEditScriptActivity">
-        </activity>
-        <activity android:name=".ui.teleprompt.TelepromptActivity">
-        </activity>
-        <activity android:name=".ui.settings.SettingsActivity"></activity>
+        <activity android:name=".ui.addeditscript.AddEditScriptActivity" />
+        <activity android:name=".ui.teleprompt.TelepromptActivity" />
+        <activity android:name=".ui.settings.SettingsActivity" />
+
+        <receiver android:name=".ScriptAppWidgetProvider">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_next_script" />
+        </receiver>
+        <service android:name=".AppWidgetIntentService" />
     </application>
 
 </manifest>

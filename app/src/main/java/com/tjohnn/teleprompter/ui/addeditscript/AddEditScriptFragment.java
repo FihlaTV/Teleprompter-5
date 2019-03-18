@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.tjohnn.teleprompter.AppWidgetIntentService;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
 import com.tjohnn.teleprompter.data.Script;
@@ -131,6 +132,10 @@ public class AddEditScriptFragment extends DaggerFragmentX {
         mViewModel.getOnScriptAdded().observe(this, r -> {
             if(r != null && r.getContentIfNotUsed() != null && r.peekContent()){
                 Toast.makeText(mActivity, R.string.script_saved, Toast.LENGTH_LONG).show();
+
+                // update widget
+                AppWidgetIntentService.startActionUpdateScriptWidgets(mActivity.getApplicationContext());
+
                 mActivity.onBackPressed();
             }
         });

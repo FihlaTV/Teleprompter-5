@@ -25,6 +25,7 @@ public class TelepromptViewModel extends AndroidViewModel {
     private MutableLiveData<Script> script = new MutableLiveData<>();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<RxEventWrapper<String>> snackBarMessage = new MutableLiveData<>();
+    private MutableLiveData<RxEventWrapper<Boolean>> markedComplete = new MutableLiveData<>();
 
     @Inject
     TelepromptViewModel(@NonNull Application application,
@@ -55,6 +56,10 @@ public class TelepromptViewModel extends AndroidViewModel {
         return snackBarMessage;
     }
 
+    LiveData<RxEventWrapper<Boolean>> getMarkedComplete() {
+        return markedComplete;
+    }
+
     void markComplete() {
         Script script = this.script.getValue();
         if (script != null) {
@@ -64,8 +69,7 @@ public class TelepromptViewModel extends AndroidViewModel {
                             .subscribeOn(schedulers.io())
                             .observeOn(schedulers.main())
                             .subscribe(
-                                    () -> {
-                                    },
+                                    () -> markedComplete.setValue(new RxEventWrapper<>(true)),
                                     throwable -> snackBarMessage.setValue(new RxEventWrapper<>(throwable.getMessage()))
                             )
             );

@@ -24,6 +24,7 @@ public class ScriptsViewModel extends AndroidViewModel {
     private LiveData<List<Script>> scripts;
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private MutableLiveData<RxEventWrapper<String>> snackBarMessage = new MutableLiveData<>();
+    private MutableLiveData<RxEventWrapper<Boolean>> onScriptDeleted = new MutableLiveData<>();
 
     @Inject
     ScriptsViewModel(@NonNull Application application,
@@ -39,13 +40,17 @@ public class ScriptsViewModel extends AndroidViewModel {
         return scripts;
     }
 
+    LiveData<RxEventWrapper<Boolean>> getOnScriptDeleted() {
+        return onScriptDeleted;
+    }
+
     void deleteScript(Script script) {
         compositeDisposable.add(
                 scriptRepository.deleteScript(script)
                         .subscribeOn(schedulers.io())
                         .observeOn(schedulers.main())
                         .subscribe(
-                                () -> {},
+                                () -> onScriptDeleted.setValue(new RxEventWrapper<>(true)),
                                 throwable -> snackBarMessage.setValue(new RxEventWrapper<>(throwable.getMessage()))
                         )
         );
