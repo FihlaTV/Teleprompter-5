@@ -21,6 +21,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add_white_24dp"
+        android:contentDescription="@string/add_new_script"
         />
     <FrameLayout android:id="@+id/empty_list_wrapper"
         android:layout_width="0dp"

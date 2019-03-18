@@ -41,10 +41,14 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
     @BindView(R.id.empty_list_wrapper)
     View emptyListMessage;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mActivity);
     }
+
 
     @Nullable
     @Override
@@ -112,5 +116,16 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
         bundle.putLong(TelepromptFragment.SCRIPT_ID_KEY, script.getId());
         Navigation.findNavController(mActivity, R.id.activity_scripts_nav_host_fragment)
                 .navigate(R.id.action_scriptsFragment_to_telepromptActivity, bundle);
+
+        logForAnalytics(script)
+    }
+
+    private void logForAnalytics(Script script) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "" + script.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, script.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "script");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
     }
 }

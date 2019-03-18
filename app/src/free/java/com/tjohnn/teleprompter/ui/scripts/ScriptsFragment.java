@@ -1,5 +1,6 @@
 package com.tjohnn.teleprompter.ui.scripts;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.google.android.gms.ads.doubleclick.PublisherAdRequest;
 import com.google.android.gms.ads.doubleclick.PublisherAdView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.tjohnn.teleprompter.AppWidgetIntentService;
 import com.tjohnn.teleprompter.R;
 import com.tjohnn.teleprompter.daggerjetifier.DaggerFragmentX;
@@ -45,10 +47,13 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
     @BindView(R.id.publisherAdView)
     PublisherAdView adView;
 
+    private FirebaseAnalytics mFirebaseAnalytics;
+
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(mActivity);
     }
 
     @Nullable
@@ -127,5 +132,16 @@ public class ScriptsFragment extends DaggerFragmentX implements ScriptAdapter.On
         bundle.putLong(TelepromptFragment.SCRIPT_ID_KEY, script.getId());
         Navigation.findNavController(mActivity, R.id.activity_scripts_nav_host_fragment)
                 .navigate(R.id.action_scriptsFragment_to_telepromptActivity, bundle);
+
+        logForAnalytics(script);
+    }
+
+    private void logForAnalytics(Script script) {
+        Bundle bundle = new Bundle();
+        bundle.putString(FirebaseAnalytics.Param.ITEM_ID, "" + script.getId());
+        bundle.putString(FirebaseAnalytics.Param.ITEM_NAME, script.getTitle());
+        bundle.putString(FirebaseAnalytics.Param.CONTENT_TYPE, "script");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+
     }
 }

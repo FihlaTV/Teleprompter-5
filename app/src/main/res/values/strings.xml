@@ -46,6 +46,7 @@
     <string name="are_you_sure_to_delete_script">Are you sure to delete \"%1$s\"?</string>
     <string name="next_script">Next Script</string>
     <string name="no_unread_script_found">No unread script found.</string>
+    <string name="add_new_script">Add New Script</string>
 
 
 </resources>
