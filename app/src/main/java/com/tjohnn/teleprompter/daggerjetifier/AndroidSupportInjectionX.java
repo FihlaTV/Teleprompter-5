@@ -5,7 +5,7 @@ import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 import dagger.android.AndroidInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+//import dagger.android.support.HasSupportFragmentInjector;
 import dagger.internal.Beta;
 
 import static android.util.Log.DEBUG;
@@ -40,7 +40,7 @@ public final class AndroidSupportInjectionX {
      */
     public static void inject(Fragment fragment) {
         checkNotNull(fragment, "fragment");
-        HasSupportFragmentInjectorX hasSupportFragmentInjector = findHasFragmentInjector(fragment);
+        HasSupportFragmentInjectorX hasSupportFragmentInjector = findHasSupportFragmentInjector(fragment);
         if (Log.isLoggable(TAG, DEBUG)) {
             Log.d(
                     TAG,
@@ -60,7 +60,7 @@ public final class AndroidSupportInjectionX {
         fragmentInjector.inject(fragment);
     }
 
-    private static HasSupportFragmentInjectorX findHasFragmentInjector(Fragment fragment) {
+    private static HasSupportFragmentInjectorX findHasSupportFragmentInjector(Fragment fragment) {
         Fragment parentFragment = fragment;
         while ((parentFragment = parentFragment.getParentFragment()) != null) {
             if (parentFragment instanceof HasSupportFragmentInjectorX) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Teleprompter</string>
+    <string name="app_name">QtunePr</string>
     <string name="delete_script">Delete Script</string>
     <string name="you_do_not_have_any_script_for_teleprompting">You do not have any script for teleprompting</string>
     <string name="enter_script_title">Enter script title</string>
